@@ -36,8 +36,6 @@ while not login_success:
     except mysql.connector.Error as err:
         print(err)
         print('Please re-enter your details.')
-    else:
-        cnx.close()
 
 cursor = cnx.cursor()
 ## Write data into the sql server
