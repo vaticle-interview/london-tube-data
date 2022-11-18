@@ -16,11 +16,10 @@ with open(config['data_path']) as f:
   
 # print(data)
 
-### Establish a connection with the sql server
+### Write data into the sql server
+## Establish a connection with the sql server
 
-# Create the connection with error handling
 login_success = False
-
 # If wrong credentials were entered, ask again.
 while not login_success:
     # Prompt the user to enter credentials
@@ -35,13 +34,10 @@ while not login_success:
     except mysql.connector.Error as err:
         print(err)
         print('Please re-enter your details.')
-
 cursor = cnx.cursor()
-## Write data into the sql server
 
 # Use the correct databse
 # Create one if it does not exist
-
 db_name = config['db_name']
 
 def create_database(cursor):
@@ -69,6 +65,8 @@ print('Now using database {}'.format(db_name))
 with open(config['schema_path']) as f:
     try:
         print("Updating database schema.")
+        # The connetion might already be lost at this point
+        cnx.reconnect()
         for result in cursor.execute(f, multi=True):
             if result.with_rows:
                 print("Rows produced by statement '{}':".format(result.statement))
