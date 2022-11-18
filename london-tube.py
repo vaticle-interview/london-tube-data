@@ -15,8 +15,7 @@ password = input('Password: ')
 
 cnx = mysql.connector.connect(user=username, password=password,
                               host='127.0.0.1',
-                              database='london_tube',
-                              user_pure=True)
+                              database='london_tube')
 
 cnx.close()
 
