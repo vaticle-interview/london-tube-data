@@ -1,5 +1,5 @@
 import json
-import mysql.connector
+from mysql.connector import (connection)
   
 ### load the json file
 f = open('train-network.json', 'r')
