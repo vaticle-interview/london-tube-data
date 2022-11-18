@@ -63,19 +63,31 @@ print('Now using database {}'.format(db_name))
 
 # Update the database schema accordign to the sql file
 with open(config['schema_path']) as f:
-    try:
-        print("Updating database schema")
-        stmt = f.read()
-        for result in cursor.execute(f, multi=True):
-            if result.with_rows:
-                print("Rows produced by statement '{}':".format(result.statement))
-                print(result.fetchall())
-            else:
-                print("Number of rows affected by statement '{}': {}".format(result.statement, result.rowcount))
+    file_content = f.read()
+    
+commands = file_content.split(';')
 
-        print("Successfully updated database schema specified in {}".format(config['schema_path']))
+for command in commands:
+    # This will skip and report errors
+    # For example, if the tables do not yet exist, this will skip over
+    # the DROP TABLE commands
+    try:
+        cursor.execute(command)
     except mysql.connector.Error as err:
         print(err)
+
+# try:
+#     print("Updating database schema")
+#     for result in cursor.execute(f, multi=True):
+#         if result.with_rows:
+#             print("Rows produced by statement '{}':".format(result.statement))
+#             print(result.fetchall())
+#         else:
+#             print("Number of rows affected by statement '{}': {}".format(result.statement, result.rowcount))
+
+#     print("Successfully updated database schema specified in {}".format(config['schema_path']))
+# except mysql.connector.Error as err:
+#     print(err)
 
 
 cursor.close()
