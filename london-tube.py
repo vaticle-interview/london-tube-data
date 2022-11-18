@@ -70,6 +70,7 @@ print('Now using database {}'.format(db_name))
 
 with open(config['schema_path']) as f:
     try:
+        print("Updating database schema.")
         cursor.execute(f, multi=True)
         print("Successfully updated database schema specified in {}".format(config['schema_path']))
     except mysql.connector.Error as err:
