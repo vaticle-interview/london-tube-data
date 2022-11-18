@@ -111,6 +111,11 @@ for row in stations_data:
     insert_station = f'INSERT INTO stations(id, name) VALUES ("{id}", "{name}")'
     execute_sql_command(insert_station)
 
+lines_data = data['lines']
+for row in stations_data:
+    name = row['name']
+    insert_line = f'INSERT INTO trainlines(name) VALUES ("{name}")'
+    execute_sql_command(insert_line)
 
 
 
