@@ -1,7 +1,6 @@
 import json
 import yaml
 import mysql.connector
-from tables import TABLES
 from mysql.connector import errorcode
 
 
