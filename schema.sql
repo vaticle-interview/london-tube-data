@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS stations;
-DROP TABLE IF EXISTS lines;
+--apparently 'lines' is a keyword in MySQL, do not use it
+DROP TABLE IF EXISTS trainlines;
 DROP TABLE IF EXISTS passes;
 
 CREATE TABLE stations (
@@ -7,7 +8,7 @@ CREATE TABLE stations (
     `name` varchar(64) NOT NULL
 );
 
-CREATE TABLE lines (
+CREATE TABLE trainlines (
     `id` int(16) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `name` varchar(64) NOT NULL
 ); 
@@ -17,5 +18,5 @@ CREATE TABLE salaries (
     `line_id` int(16) NOT NULL,
     PRIMARY KEY (`station_id`, `line_id`),
     FOREIGN KEY (`station_id`) REFERENCES stations(`id`),
-    FOREIGN KEY (`line_id`) REFERENCES lines(`id`)
+    FOREIGN KEY (`line_id`) REFERENCES trainlines(`id`)
 );
