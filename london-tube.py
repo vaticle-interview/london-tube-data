@@ -79,9 +79,6 @@ except mysql.connector.Error as err:
         exit(1)
 print('Now using database {}'.format(db_name))
 
-#TODO extract a function "execute command"
-
-
 def execute_sql_command(command):
     # For prettier printing
     command = command.strip()
@@ -112,10 +109,17 @@ for row in stations_data:
     execute_sql_command(insert_station)
 
 lines_data = data['lines']
-for row in lines_data:
-    name = row['name']
-    insert_line = f'INSERT INTO trainlines(name) VALUES ("{name}")'
+# the loop is written this way to have id for passes data
+# the downside of this is that the trainlines database has to be
+# empty before inserting, otherwise the ids will not match.
+for id, line in enumerate(lines_data):
+    name = line['name']
+    insert_line = f'INSERT INTO trainlines(id, name) VALUES ("{id}", "{name}")'
     execute_sql_command(insert_line)
+    for passed_station in line['stations']:
+        insert_pass = f'INSERT INTO passes(station_id, line_id) VALUES ("{passed_station}", "{id}")'
+        execute_sql_command(insert_pass)
+        
 
 
 

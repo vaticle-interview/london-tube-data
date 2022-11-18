@@ -8,7 +8,7 @@ CREATE TABLE stations (
 );
 
 CREATE TABLE trainlines (
-    `id` int(16) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `id` int(16) NOT NULL PRIMARY KEY,
     `name` varchar(64) NOT NULL
 ); 
 
