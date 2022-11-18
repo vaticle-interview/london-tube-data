@@ -90,10 +90,10 @@ def execute_sql_command(command):
         logging.debug('------------------------------------------------')
         logging.debug(command)
         logging.debug('------------------------------------------------')
-        cursor.execute(command, data)
+        cursor.execute(command)
         logging.debug(f'{bcolors.OKGREEN}Success{bcolors.ENDC}')
     except mysql.connector.Error as err:
-        logging.error(f'{bcolors.FAIL}err{bcolors.ENDC}')
+        logging.error(f'{bcolors.FAIL}{err}{bcolors.ENDC}')
 
 # Update the database schema accordign to the sql file
 with open(config['schema_path']) as f:
