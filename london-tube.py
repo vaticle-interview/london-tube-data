@@ -72,6 +72,10 @@ for command in commands:
     # For example, if the tables do not yet exist, this will skip over
     # the DROP TABLE commands
     try:
+        print("Executing the following sql command")
+        print("------------------------------------------------")
+        print(command)
+        print("------------------------------------------------")
         cursor.execute(command)
     except mysql.connector.Error as err:
         print(err)
