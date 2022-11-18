@@ -1,8 +1,23 @@
 import json
 import yaml
+# TODO refactor the code using logger
+import logging
 import mysql.connector
 from mysql.connector import errorcode
 
+# Colours for prettier printing
+# Copied from joeld and Peter Mortensen
+# https://stackoverflow.com/questions/287871/how-do-i-print-colored-text-to-the-terminal
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
 ### Load the config file
 with open('config.yaml') as f:
@@ -61,6 +76,8 @@ except mysql.connector.Error as err:
         exit(1)
 print('Now using database {}'.format(db_name))
 
+#TODO extract a function "execute command"
+
 # Update the database schema accordign to the sql file
 with open(config['schema_path']) as f:
     file_content = f.read()
@@ -70,37 +87,34 @@ for command in commands:
     # For prettier printing
     command = command.strip()
     try:
-        print("Executing the following sql command")
-        print("------------------------------------------------")
+        print('Executing the following sql command')
+        print('------------------------------------------------')
         print(command)
-        print("------------------------------------------------")
+        print('------------------------------------------------')
         cursor.execute(command)
-        print("Success")
+        print(f'{bcolors.OKGREEN}Success{bcolors.ENDC}')
     except mysql.connector.Error as err:
-        print(err)
-print("Updated database schema specified in {}".format(config['schema_path']))
+        print(f'{bcolors.FAIL}err{bcolors.ENDC}')
+print('Updated database schema specified in {}'.format(config['schema_path']))
 
-# try:
-#     print("Updating database schema")
-#     for result in cursor.execute(f, multi=True):
-#         if result.with_rows:
-#             print("Rows produced by statement '{}':".format(result.statement))
-#             print(result.fetchall())
-#         else:
-#             print("Number of rows affected by statement '{}': {}".format(result.statement, result.rowcount))
+## Insert data
+stations_data = data['stations']
+for row in stations_data:
+    id = row['id']
+    name = row['name']
+    print(id)
+    print(name)
 
-#     print("Successfully updated database schema specified in {}".format(config['schema_path']))
-# except mysql.connector.Error as err:
-#     print(err)
+
+
+cnx.commit()
+### Continuously accept queries
+
+## TODO Use "list stations" or "list lines" to see all the stations/lines
 
 
 cursor.close()
 cnx.close()
 
-### Continuously accept queries
-
-## Use "list stations" or "list lines" to see all the stations/lines
-
-
-### Allow the user to quit
+### TODO Allow the user to quit
 
