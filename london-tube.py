@@ -68,18 +68,26 @@ print('Now using database {}'.format(db_name))
 
 # Create tables 
 # TODO drop the old table if already exists
-for table_name in TABLES:
-    table_description = TABLES[table_name]
+
+with open(config['schema_path']) as f:
     try:
-        print("Creating table {}: ".format(table_name), end='')
-        cursor.execute(table_description)
+        cursor.execute(f, multi=True)
+        print("Successfully updated database schema specified in {}".format(config['schema_path']))
     except mysql.connector.Error as err:
-        if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
-            print("already exists.")
-        else:
-            print(err.msg)
-    else:
-        print("OK")
+        print(err)
+
+# for table_name in TABLES:
+#     table_description = TABLES[table_name]
+#     try:
+#         print("Creating table {}: ".format(table_name), end='')
+#         cursor.execute(table_description)
+#     except mysql.connector.Error as err:
+#         if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
+#             print("already exists.")
+#         else:
+#             print(err.msg)
+#     else:
+#         print("OK")
 
 cursor.close()
 cnx.close()

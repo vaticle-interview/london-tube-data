@@ -18,8 +18,8 @@ TABLES['passes'] = (
     "  `station_id` int(16) NOT NULL,"
     "  `line_id` int(16) NOT NULL,"
     "  PRIMARY KEY (`station_id`,`line_id`)"
-    "  CONSTRAINT `salaries_fk_1` FOREIGN KEY (`station_id`) "
-    "     REFERENCES `stations` (`id`) ON DELETE CASCADE"
-    "  CONSTRAINT `salaries_fk_2` FOREIGN KEY (`line_id`) "
-    "     REFERENCES `lines` (`id`) ON DELETE CASCADE"
+    "  FOREIGN KEY (`station_id`) "
+    "     REFERENCES stations(`id`) ON DELETE CASCADE"
+    "  FOREIGN KEY (`line_id`) "
+    "     REFERENCES lines(`id`) ON DELETE CASCADE"
     ") ENGINE=InnoDB")

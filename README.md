@@ -19,5 +19,7 @@ https://pypi.org/project/PyYAML/
 # Design
 1. Configurations (including string literals) are stored in a separate config.yaml
 file for better adaptability.
+2. Other than foreign key, there is no extra constraint on the database schema. 
+Because the user is not supposed to modify the database directly.
 
 # Behavioural 
