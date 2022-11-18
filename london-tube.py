@@ -11,7 +11,7 @@ with open('config.yaml') as f:
 print(config)
   
 ### load the json file
-with open(config['DATA_PATH']) as f:
+with open(config['data_path']) as f:
     data = json.load(f)
   
 print(data)
