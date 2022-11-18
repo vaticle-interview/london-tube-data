@@ -108,7 +108,7 @@ stations_data = data['stations']
 for row in stations_data:
     id = row['id']
     name = row['name']
-    insert_station = f'INSERT INTO stations (id, name) VALUES {id}, {name}'
+    insert_station = f'INSERT INTO stations (id, name) VALUES ({id}, {name})'
     execute_sql_command(insert_station)
 
 
