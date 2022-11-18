@@ -3,5 +3,5 @@ data_path: 'train-network.json'
 # starting the application
 db_name: 'london_tube'
 schema_path: 'schema.sql'
-# Set to logging.INFO for less verbose messages
-logging_level: logging.DEBUG
+# Set to INFO for less verbose messages
+logging_level: DEBUG

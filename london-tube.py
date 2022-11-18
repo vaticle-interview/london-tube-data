@@ -5,8 +5,12 @@ import logging
 import mysql.connector
 from mysql.connector import errorcode
 
+### Load the config file
+with open('config.yaml') as f:
+    config = yaml.load(f, Loader=yaml.FullLoader)
+
 # Configure the Logger
-logging.getLogger().setLevel(logging.DEBUG)
+logging.getLogger().setLevel(logging[config['logging_level']])
 
 # Colours for prettier printing
 # Copied from joeld and Peter Mortensen
@@ -21,10 +25,6 @@ class bcolors:
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
-
-### Load the config file
-with open('config.yaml') as f:
-    config = yaml.load(f, Loader=yaml.FullLoader)
 
 # print(config)
   
