@@ -1,6 +1,7 @@
 import json
 import yaml
 import mysql.connector
+from tables import TABLES
 from mysql.connector import errorcode
 
 
@@ -8,13 +9,13 @@ from mysql.connector import errorcode
 with open('config.yaml') as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
 
-print(config)
+# print(config)
   
 ### load the json file
 with open(config['data_path']) as f:
     data = json.load(f)
   
-print(data)
+# print(data)
 
 ### Establish a connection with the sql server
 
@@ -31,22 +32,63 @@ while not login_success:
                                         password=password,
                                         database=config['db_name'])
         print('Successfully established connection with MySQL server')
-        print('Now using databse ' + config['db_name'])
         login_success = True 
     except mysql.connector.Error as err:
-        if err.errno == errorcode.ER_BAD_DB_ERROR:
-            print('Database does not exist, please check the configuration in config.yaml')
-            # if database name is wrong, there is no point in asking for credentials again
-            break
-        else:
-            print(err)
-            print('Please re-enter your details.')
+        print(err)
+        print('Please re-enter your details.')
     else:
         cnx.close()
 
-### Write data into the sql server
+cursor = cnx.cursor()
+## Write data into the sql server
+
+# Use the correct databse
+# Create one if it does not exist
+
+db_name = config['db_name']
+
+def create_database(cursor):
+    try:
+        cursor.execute(
+            "CREATE DATABASE {} DEFAULT CHARACTER SET 'utf8'".format(db_name))
+    except mysql.connector.Error as err:
+        print("Failed creating database: {}".format(err))
+        exit(1)
+
+try:
+    cursor.execute("USE {}".format(db_name))
+except mysql.connector.Error as err:
+    print("Database {} does not exists.".format(db_name))
+    if err.errno == errorcode.ER_BAD_DB_ERROR:
+        create_database(cursor)
+        print("Database {} created successfully.".format(db_name))
+        cnx.database = db_name
+    else:
+        print(err)
+        exit(1)
+print('Now using database {}'.format(db_name))
+
+# Create tables 
+# TODO drop the old table if already exists
+for table_name in TABLES:
+    table_description = TABLES[table_name]
+    try:
+        print("Creating table {}: ".format(table_name), end='')
+        cursor.execute(table_description)
+    except mysql.connector.Error as err:
+        if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
+            print("already exists.")
+        else:
+            print(err.msg)
+    else:
+        print("OK")
+
+cursor.close()
+cnx.close()
 
 ### Continuously accept queries
+
+## Use "list stations" or "list lines" to see all the stations/lines
 
 
 ### Allow the user to quit
