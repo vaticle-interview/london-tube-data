@@ -10,7 +10,7 @@ with open('config.yaml') as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
 
 # Configure the Logger
-logging.getLogger().setLevel(logging[config['logging_level']])
+logging.getLogger().setLevel(config['logging_level'])
 
 # Colours for prettier printing
 # Copied from joeld and Peter Mortensen
