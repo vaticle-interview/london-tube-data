@@ -64,21 +64,21 @@ print('Now using database {}'.format(db_name))
 # Update the database schema accordign to the sql file
 with open(config['schema_path']) as f:
     file_content = f.read()
-    
 commands = file_content.split(';')
 
 for command in commands:
-    # This will skip and report errors
-    # For example, if the tables do not yet exist, this will skip over
-    # the DROP TABLE commands
+    # For prettier printing
+    command = command.strip()
     try:
         print("Executing the following sql command")
         print("------------------------------------------------")
         print(command)
         print("------------------------------------------------")
         cursor.execute(command)
+        print("Success")
     except mysql.connector.Error as err:
         print(err)
+print("Updated database schema specified in {}".format(config['schema_path']))
 
 # try:
 #     print("Updating database schema")

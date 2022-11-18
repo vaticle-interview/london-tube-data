@@ -1,5 +1,4 @@
 DROP TABLE IF EXISTS stations;
---apparently 'lines' is a keyword in MySQL, do not use it
 DROP TABLE IF EXISTS trainlines;
 DROP TABLE IF EXISTS passes;
 
