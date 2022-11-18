@@ -66,7 +66,7 @@ with open(config['schema_path']) as f:
     try:
         print("Updating database schema.")
         # The connetion might already be lost at this point
-        cnx.reconnect()
+        cursor = cnx.cursor()
         for result in cursor.execute(f, multi=True):
             if result.with_rows:
                 print("Rows produced by statement '{}':".format(result.statement))
