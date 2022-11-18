@@ -81,6 +81,7 @@ print('Now using database {}'.format(db_name))
 
 #TODO extract a function "execute command"
 
+
 def execute_sql_command(command):
     # For prettier printing
     command = command.strip()
@@ -89,7 +90,7 @@ def execute_sql_command(command):
         logging.debug('------------------------------------------------')
         logging.debug(command)
         logging.debug('------------------------------------------------')
-        cursor.execute(command)
+        cursor.execute(command, data)
         logging.debug(f'{bcolors.OKGREEN}Success{bcolors.ENDC}')
     except mysql.connector.Error as err:
         logging.error(f'{bcolors.FAIL}err{bcolors.ENDC}')
@@ -107,7 +108,7 @@ stations_data = data['stations']
 for row in stations_data:
     id = row['id']
     name = row['name']
-    insert_station = 'INSERT INTO stations (id, name) VALUES (%s, %s)'.format(id, name)
+    insert_station = f'INSERT INTO stations (id, name) VALUES {id}, {name}'
     execute_sql_command(insert_station)
 
 
