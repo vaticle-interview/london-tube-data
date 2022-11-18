@@ -78,24 +78,26 @@ print('Now using database {}'.format(db_name))
 
 #TODO extract a function "execute command"
 
+def execute_sql_command(command):
+    # For prettier printing
+    command = command.strip()
+    try:
+        logging.debug('Executing the following sql command')
+        logging.debug('------------------------------------------------')
+        logging.debug(command)
+        logging.debug('------------------------------------------------')
+        cursor.execute(command)
+        logging.debug(f'{bcolors.OKGREEN}Success{bcolors.ENDC}')
+    except mysql.connector.Error as err:
+        logging.debug(f'{bcolors.FAIL}err{bcolors.ENDC}')
+
 # Update the database schema accordign to the sql file
 with open(config['schema_path']) as f:
     file_content = f.read()
 commands = file_content.split(';')
 
 for command in commands:
-    # For prettier printing
-    command = command.strip()
-    try:
-        print('Executing the following sql command')
-        print('------------------------------------------------')
-        print(command)
-        print('------------------------------------------------')
-        cursor.execute(command)
-        print(f'{bcolors.OKGREEN}Success{bcolors.ENDC}')
-    except mysql.connector.Error as err:
-        print(f'{bcolors.FAIL}err{bcolors.ENDC}')
-print('Updated database schema specified in {}'.format(config['schema_path']))
+    execute_sql_command(command)
 
 ## Insert data
 stations_data = data['stations']
@@ -111,6 +113,8 @@ cnx.commit()
 ### Continuously accept queries
 
 ## TODO Use "list stations" or "list lines" to see all the stations/lines
+
+## TODO Use "-help" to see all the possible commands
 
 
 cursor.close()
