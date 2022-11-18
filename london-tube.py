@@ -5,6 +5,9 @@ import logging
 import mysql.connector
 from mysql.connector import errorcode
 
+# Configure the Logger
+logging.getLogger().setLevel(logging.DEBUG)
+
 # Colours for prettier printing
 # Copied from joeld and Peter Mortensen
 # https://stackoverflow.com/questions/287871/how-do-i-print-colored-text-to-the-terminal
@@ -89,7 +92,7 @@ def execute_sql_command(command):
         cursor.execute(command)
         logging.debug(f'{bcolors.OKGREEN}Success{bcolors.ENDC}')
     except mysql.connector.Error as err:
-        logging.debug(f'{bcolors.FAIL}err{bcolors.ENDC}')
+        logging.error(f'{bcolors.FAIL}err{bcolors.ENDC}')
 
 # Update the database schema accordign to the sql file
 with open(config['schema_path']) as f:
