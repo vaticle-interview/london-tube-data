@@ -65,8 +65,7 @@ print('Now using database {}'.format(db_name))
 with open(config['schema_path']) as f:
     try:
         print("Updating database schema")
-        # The connetion might already be lost at this point
-        cursor = cnx.cursor()
+        stmt = f.read()
         for result in cursor.execute(f, multi=True):
             if result.with_rows:
                 print("Rows produced by statement '{}':".format(result.statement))
