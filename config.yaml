@@ -1,2 +1,4 @@
 data_path: 'train-network.json'
+# The following database should exist in the SQL server before
+# starting the application
 db_name: 'london_tube'
