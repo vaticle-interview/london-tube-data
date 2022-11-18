@@ -1,2 +1,2 @@
 data_path: 'train-network.json'
-db_name: 'london-tube'
+db_name: 'london_tube'
