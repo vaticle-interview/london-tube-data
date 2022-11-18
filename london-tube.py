@@ -1,11 +1,18 @@
 import json
+import yaml
 import mysql.connector
 from mysql.connector import errorcode
+
+
+### Load the config file
+with open('config.yaml') as f:
+    config = yaml.load(f, Loader=yaml.FullLoader)
+
+print(config)
   
 ### load the json file
-f = open('train-network.json', 'r')
-  
-data = json.load(f)
+with open('train-network.json') as f:
+    data = json.load(f)
   
 print(data)
 
@@ -22,11 +29,9 @@ try:
                                 database='london-tube')
   print('Successfully established connection with MySQL server')
 except mysql.connector.Error as err:
-#   if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-#     print("Something is wrong with your user name or password")
-#   elif err.errno == errorcode.ER_BAD_DB_ERROR:
-#     print("Database does not exist")
-#   else:
+  if err.errno == errorcode.ER_BAD_DB_ERROR:
+    print("Database does not exist, please check the configuration in config.yaml")
+  else:
     print(err)
 else:
   cnx.close()
