@@ -65,29 +65,22 @@ except mysql.connector.Error as err:
         exit(1)
 print('Now using database {}'.format(db_name))
 
-# Create tables 
-# TODO drop the old table if already exists
-
+# Update the database schema accordign to the sql file
 with open(config['schema_path']) as f:
     try:
         print("Updating database schema.")
-        cursor.execute(f, multi=True)
+        for result in cursor.execute(f, multi=True):
+            if result.with_rows:
+                print("Rows produced by statement '{}':".format(result.statement))
+                print(result.fetchall())
+            else:
+                print("Number of rows affected by statement '{}': {}".format(
+      result.statement, result.rowcount))
+
         print("Successfully updated database schema specified in {}".format(config['schema_path']))
     except mysql.connector.Error as err:
         print(err)
 
-# for table_name in TABLES:
-#     table_description = TABLES[table_name]
-#     try:
-#         print("Creating table {}: ".format(table_name), end='')
-#         cursor.execute(table_description)
-#     except mysql.connector.Error as err:
-#         if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
-#             print("already exists.")
-#         else:
-#             print(err.msg)
-#     else:
-#         print("OK")
 
 cursor.close()
 cnx.close()
