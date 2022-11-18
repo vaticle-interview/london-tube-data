@@ -11,7 +11,7 @@ with open('config.yaml') as f:
 print(config)
   
 ### load the json file
-with open('train-network.json') as f:
+with open(config['DATA_PATH']) as f:
     data = json.load(f)
   
 print(data)
@@ -23,11 +23,13 @@ username = input('Username: ')
 password = input('Password: ')
 
 
+# Create the connection with error handling
 try:
   cnx = mysql.connector.connect(user=username,
                                 password=password,
-                                database='london-tube')
+                                database=config['db_name'])
   print('Successfully established connection with MySQL server')
+  print('Now using databse ' + config['db_name'])
 except mysql.connector.Error as err:
   if err.errno == errorcode.ER_BAD_DB_ERROR:
     print("Database does not exist, please check the configuration in config.yaml")
